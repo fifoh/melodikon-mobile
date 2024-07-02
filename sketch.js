@@ -425,10 +425,7 @@ function setup() {
   metroImage.position(10 + playButton.width, 30)
 
   // duration / speed slider
-  let sliderWrapper = select('.slider-wrapper');
   durationSlider = createSlider(0.1, 0.4, 0.3, 0);
-  durationSlider.parent(sliderWrapper);
-  durationSlider.style('width', '70px');
   durationSlider.position(10 + playButton.width + metroImage.width, 40); 
   
   // slider to rotate wheels
