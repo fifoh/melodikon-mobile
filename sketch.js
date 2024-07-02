@@ -537,9 +537,9 @@ function draw() {
     for (let i = numWheels; i >= 1; i--) {
       push();
       // 30 here is the offset position for the wheels
-      wheelSpacingX = (windowWidth/numWheels)*0.4;
+      wheelSpacingX = (windowWidth/numWheels)*0.3;
       wheelSpacingY = (windowHeight/numWheels)*0.5;      
-      startingwheelX = windowWidth * 0.3 // was 0.2
+      startingwheelX = windowWidth * 0.25 // was 0.2
       startingwheelY = windowHeight * 0.7      
       
       translate(startingwheelX + (i - 1) * wheelSpacingX, startingwheelY - (i - 1) * wheelSpacingY); // Adjusted position for overlap
