@@ -45,7 +45,7 @@ let ellipseButtons = [];
 let ellipseColors = [
   [255,228,209],   // Red
   [203,237,209],   // Green
-  [187,234,255]    // Blue
+  [167,234,255]    // Blue
 ];
 
 // Audio
@@ -848,7 +848,9 @@ function clearNotes() {
     for (let j = 0; j < numSpokes; j++) {
       spokeVisible[i][j] = false;
     }
-  } 
+  }
+  individualInstrumentArray = new Array(37).fill(1);
+  loadAudioSet(individualInstrumentArray);
 }
 
 
