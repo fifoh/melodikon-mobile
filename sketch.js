@@ -425,7 +425,10 @@ function setup() {
   metroImage.position(10 + playButton.width, 30)
 
   // duration / speed slider
+  let sliderWrapper = select('.slider-wrapper');
   durationSlider = createSlider(0.1, 0.4, 0.3, 0);
+  durationSlider.parent(sliderWrapper);
+  durationSlider.style('width', '50px');
   durationSlider.position(10 + playButton.width + metroImage.width, 40); 
   
   // slider to rotate wheels
@@ -862,9 +865,7 @@ function clearNotes() {
     for (let j = 0; j < numSpokes; j++) {
       spokeVisible[i][j] = false;
     }
-  }
-  instrumentDropdown.selected('Comb');
-  individualInstrumentArray = new Array(37).fill(1);      
+  } 
 }
 
 
