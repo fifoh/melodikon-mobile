@@ -442,20 +442,22 @@ function setup() {
   addButton.position(windowWidth - 55 - addButton.width, 30);
   addButton.mousePressed(() => {
     if (numWheels < 15) {
-    numWheels++;
-    initializePointsArray();
+      numWheels++;
+      initializePointsArray();
+      updateButtons();
     }
   });
 
   let removeButton = createImg('images/minus_ring.jpg', '-');
   removeButton.size(45, 45);
-  removeButton.position(windowWidth - 60- removeButton.width - addButton.width, 30);
+  removeButton.position(windowWidth - 60 - removeButton.width - addButton.width, 30);
   removeButton.mousePressed(() => {
     if (numWheels > 3) {
       numWheels--;
       initializePointsArray();
+      updateButtons();
     }
-  });  
+  });
   
   // dropdown menus for scales and instruments
   // Scale dropdown
@@ -715,25 +717,12 @@ function keyPressed() { // idiot
 
 function rightarrowPressed() {
   selectedWheel = max(0, selectedWheel - 1);
-  if (selectedWheel <= 0) {
-    rightarrowButton.attribute('disabled', 'true');
-    rightarrowButton.attribute('src', 'images/leftarrow_disabled_icon.jpg'); 
-  }
-  if (selectedWheel >=0) {
-    leftarrowButton.removeAttribute('disabled');
-    leftarrowButton.attribute('src', 'images/rightarrow_icon.jpg'); 
-  }
+  updateButtons();
 }
 
 function leftarrowPressed() {
-  selectedWheel = min(numWheels+1, selectedWheel + 1);
-  if (selectedWheel >= numWheels+1) {
-    leftarrowButton.attribute('disabled', 'true');
-    leftarrowButton.attribute('src', 'images/rightarrow_disabled_icon.jpg'); 
-  } else if (selectedWheel >=0) {
-    rightarrowButton.removeAttribute('disabled');
-    rightarrowButton.attribute('src', 'images/leftarrow_icon.jpg'); 
-  }
+  selectedWheel = min(numWheels + 1, selectedWheel + 1);
+  updateButtons();
 }
 
 function togglePlayback() {
@@ -972,4 +961,22 @@ function updateIndividualInstrumentArray(indexToUpdate) {
       loadAudioSet(individualInstrumentArray);
     }
   }, 50); // Adjust debounce delay as needed (e.g., 50 milliseconds)
+}
+
+function updateButtons() {
+  if (selectedWheel <= 0) {
+    rightarrowButton.attribute('disabled', 'true');
+    rightarrowButton.attribute('src', 'images/leftarrow_disabled_icon.jpg'); 
+  } else {
+    rightarrowButton.removeAttribute('disabled');
+    rightarrowButton.attribute('src', 'images/leftarrow_icon.jpg'); 
+  }
+
+  if (selectedWheel >= numWheels + 1) {
+    leftarrowButton.attribute('disabled', 'true');
+    leftarrowButton.attribute('src', 'images/rightarrow_disabled_icon.jpg'); 
+  } else {
+    leftarrowButton.removeAttribute('disabled');
+    leftarrowButton.attribute('src', 'images/rightarrow_icon.jpg'); 
+  }
 }
