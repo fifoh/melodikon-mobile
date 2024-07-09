@@ -601,7 +601,7 @@ function touchStarted() {
       checkSpokes(spokeX, spokeY, spokeVisible[selectedWheel], touchX, touchY);
     }
   }
-  return false; // prevent any default behavior
+  return true;
 }
 
 function checkSpokes(centerX, centerY, visibleSpokes, touchX, touchY) {
