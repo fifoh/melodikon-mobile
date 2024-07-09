@@ -1,5 +1,3 @@
-// problem - function touchStarted doesn't create spokes once mouseclicked is removed - FIX
-
 p5.disableFriendlyErrors = true;
 const touchThreshold = 50;
 let numWheels = 6;
@@ -97,7 +95,6 @@ function preload() {
   loadAudioSet(individualInstrumentArray);
 }
 
-// Function to load audio set based on individualInstrumentArray
 function loadAudioSet(individualInstrumentArray) {
   let filePathsToLoad = [];
   let bufferIndicesToLoad = [];
@@ -109,7 +106,7 @@ function loadAudioSet(individualInstrumentArray) {
     } else if (setNumber === 2) {
       instrumentSet = 'piano';
     } else if (setNumber === 3) {
-      instrumentSet = 'guitar';
+      instrumentSet = 'bells';
     } else {
       console.error(`Invalid set number ${setNumber} at index ${i}`);
       return;
@@ -142,7 +139,7 @@ function finishedLoading(newBufferList, bufferIndicesToLoad) {
     } else if (setNumber === 2) {
       instrumentSet = 'piano';
     } else if (setNumber === 3) {
-      instrumentSet = 'guitar';
+      instrumentSet = 'bells';
     }
     let filePath = `${instrumentSet}/${bufferIndex}.mp3`;
     loadedInstrumentSetBuffers[filePath] = newBufferList[i];
@@ -157,7 +154,7 @@ function finishedLoading(newBufferList, bufferIndicesToLoad) {
       } else if (setNumber === 2) {
         instrumentSet = 'piano';
       } else if (setNumber === 3) {
-        instrumentSet = 'guitar';
+        instrumentSet = 'bells';
       }
       return `${instrumentSet}/${bufferIndex}.mp3`;
     });
@@ -447,7 +444,7 @@ function setup() {
   instrumentDropdown.option('Select an Instrument:', '');
   instrumentDropdown.option('Comb');
   instrumentDropdown.option('Piano');
-  instrumentDropdown.option('Harp');
+  instrumentDropdown.option('Bells');
   instrumentDropdown.position(10, windowHeight - 25);
   instrumentDropdown.changed(changeInstrument);    
   
@@ -777,7 +774,7 @@ function changeInstrument() {
     if (selectedInstrument === 'Piano') {
       individualInstrumentArray = new Array(37).fill(2);
     }
-    if (selectedInstrument === 'Harp') {
+    if (selectedInstrument === 'Bells') {
       individualInstrumentArray = new Array(37).fill(3);
     }
     console.log('Selected instrument:', selectedInstrument);
