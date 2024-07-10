@@ -1,4 +1,5 @@
 p5.disableFriendlyErrors = true;
+let originalBarColors = [];
 const touchThreshold = 50;
 let numWheels = 6;
 let playingSources = [];
@@ -410,6 +411,7 @@ function setup() {
       numWheels++;
       initializePointsArray();
       updateButtons();
+      updateBarColors();
     }
   });
 
@@ -421,6 +423,7 @@ function setup() {
       numWheels--;
       initializePointsArray();
       updateButtons();
+      updateBarColors();
     }
   });
 
@@ -449,7 +452,12 @@ function setup() {
   instrumentDropdown.changed(changeInstrument);    
   
   for (let i = 0; i < numWheels; i++) {
-    barColors[i] = color(0, 60);
+    if (i === selectedWheel-1) {
+      originalBarColors[i] = color(0); // black color for the selected wheel
+    } else {
+      originalBarColors[i] = color(0, 60); // grey color for other wheels
+    }
+    barColors[i] = originalBarColors[i];
   }
 }
 
@@ -505,25 +513,26 @@ function draw() {
     for (let i = 0; i < numWheels; i++) {
       stroke(barColors[i]);
       strokeWeight(bar_thickness);
-      let barOffsetX = 90
-      let barOffsetY = -10
-      let startX = barOffsetX+startingwheelX + i * wheelSpacingX;
-      let startY = barOffsetY+startingwheelY - i * wheelSpacingY;
+      let barOffsetX = 90;
+      let barOffsetY = -10;
+      let startX = barOffsetX + startingwheelX + i * wheelSpacingX;
+      let startY = barOffsetY + startingwheelY - i * wheelSpacingY;
       let endX = startX + 70 - i * 4; // Adjust the length as needed
       let endY = startY;
       line(startX, startY, endX, endY);
+
       
-    let buttonSize = 20;
-    let buttonX = endX;
-    let buttonY = endY;
-    ellipseButtons.push({ id: i, x: buttonX, y: buttonY, size: buttonSize });
-    let originalIndex = scaleMappings[i];
-    let colIndex = individualInstrumentArray[originalIndex] - 1;
-    
-    fill(ellipseColors[colIndex]);
-    stroke(barColors[i]);
-    strokeWeight(0);    
-    ellipse(buttonX, buttonY, buttonSize, buttonSize);           
+      let buttonSize = 20;
+      let buttonX = endX;
+      let buttonY = endY;
+      ellipseButtons.push({ id: i, x: buttonX, y: buttonY, size: buttonSize });
+      let originalIndex = scaleMappings[i];
+      let colIndex = individualInstrumentArray[originalIndex] - 1;
+
+      fill(ellipseColors[colIndex]);
+      stroke(barColors[i]);
+      strokeWeight(0);    
+      ellipse(buttonX, buttonY, buttonSize, buttonSize);           
     }
   }
 }
@@ -621,11 +630,13 @@ function checkSpokes(centerX, centerY, visibleSpokes, touchX, touchY) {
 function rightarrowPressed() {
   selectedWheel = max(0, selectedWheel - 1);
   updateButtons();
+  updateBarColors();
 }
 
 function leftarrowPressed() {
   selectedWheel = min(numWheels + 1, selectedWheel + 1);
   updateButtons();
+  updateBarColors();
 }
 
 function togglePlayback() {
@@ -727,9 +738,15 @@ function stopAngleAnimation() {
 }
 
 function flashBar(barIndex) {
+  // Save the original color
+  let originalColor = barColors[barIndex];
+
+  // Set the bar color to white with some opacity
   barColors[barIndex] = color(255, 75);
+  
+  // Revert to the original color after a timeout
   setTimeout(() => {
-    barColors[barIndex] = color(0, 60);
+    barColors[barIndex] = originalColor;
   }, 70);
 }
 
@@ -844,5 +861,16 @@ function updateButtons() {
   } else {
     leftarrowButton.removeAttribute('disabled');
     leftarrowButton.attribute('src', 'images/rightarrow_icon.jpg'); 
+  }
+}
+
+function updateBarColors() {
+  for (let i = 0; i < numWheels; i++) {
+    if (i === selectedWheel-1) {
+      originalBarColors[i] = color(0); // black color for the selected wheel
+    } else {
+      originalBarColors[i] = color(0, 60); // grey color for other wheels
+    }
+    barColors[i] = originalBarColors[i];
   }
 }
