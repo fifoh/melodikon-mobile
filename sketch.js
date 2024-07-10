@@ -421,6 +421,9 @@ function setup() {
   removeButton.touchStarted(() => {
     if (numWheels > 3) {
       numWheels--;
+      if (selectedWheel > numWheels+1) {
+        selectedWheel = numWheels+1;
+      }
       initializePointsArray();
       updateButtons();
       updateBarColors();
