@@ -25,6 +25,8 @@ let timeouts = [];
 let isPlaying = false;
 let playButton;
 
+let randomButton;
+
 let startTime, endTime, duration, isAnimating = false;
 let startAngle, endAngle;
 let slowDownFactor = 32.0; // slow animation
@@ -429,6 +431,12 @@ function setup() {
       updateBarColors();
     }
   });
+  
+  // random button
+  randomButton = createImg("images/random_button.jpg", "R")
+  randomButton.size(45, 45);
+  randomButton.touchStarted(randomiseEverything);
+  positionrandomButton();      
 
   scalesDropdown = createSelect();
   scalesDropdown.option('Select a Scale:', '');
@@ -875,5 +883,56 @@ function updateBarColors() {
       originalBarColors[i] = color(0, 60); // grey color for other wheels
     }
     barColors[i] = originalBarColors[i];
+  }
+}
+
+function positionrandomButton() {
+  randomButton.position(windowWidth - 50, 80);
+}
+
+function randomiseEverything() {
+  randomTempo = random(0.15, 0.4); // avoid slowest option - full range
+  durationSlider.value(randomTempo);
+
+  // start with number of notes
+  numWheels = int(random(12)) + 3;
+  
+  randomScale = random(["Major Pentatonic", "Minor Pentatonic", "Major scale", "Dorian mode", "Mixolydian mode", "Aeolian mode", "Chromatic", "Harmonic Minor", "Whole Tone", "Octatonic"]);
+  scalesDropdown.selected(randomScale);
+  changeScale(); 
+
+  createRandomPoints(int(random(30)+10));  
+  initializePointsArray();
+  updateButtons();
+  updateBarColors();
+  
+  // individ. instruments
+  individualInstrumentArray = [];
+  for (let i = 0; i < 37; i++) {
+  individualInstrumentArray.push(randomInt(1, 3));
+}
+  loadAudioSet(individualInstrumentArray);    
+  
+}
+
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function createRandomPoints(numPoints) {
+  
+  let random_density = random(0.2) + 0.79
+  
+  spokeVisible = [];
+  for (let i = 0; i < numWheels+1; i++) {
+    spokeVisible[i] = [];
+    for (let j = 0; j < numSpokes; j++) {
+      // Ensure that no two consecutive spokes are visible
+      if (j > 0 && spokeVisible[i][j - 1]) {
+        spokeVisible[i][j] = false;
+      } else {
+        spokeVisible[i][j] = random() > random_density; // Adjust the probability as needed
+      }
+    }
   }
 }
