@@ -662,6 +662,7 @@ function togglePlayback() {
 function playSounds() {
   isPlaying = true;
   playButton.attribute('src', 'images/stop_icon.jpg');
+  randomButton.attribute('src', 'images/random_button_disabled.jpg');
   
   // mapping duration (reverse)
   let unmappedDuration = durationSlider.value();
@@ -712,6 +713,7 @@ function playSound(index) {
 function stopSounds() {
   isPlaying = false;
   playButton.attribute('src', 'images/play_icon.jpg');
+  randomButton.attribute('src', 'images/random_button.jpg');
   durationSlider.removeAttribute('disabled');
   for (let i = 0; i < timeouts.length; i++) {
     clearTimeout(timeouts[i]);
@@ -891,27 +893,31 @@ function positionrandomButton() {
 }
 
 function randomiseEverything() {
-  randomTempo = random(0.15, 0.4); // avoid slowest option - full range
-  durationSlider.value(randomTempo);
+  if (!isPlaying) {
+    
 
-  // start with number of notes
-  numWheels = int(random(12)) + 3;
-  
-  randomScale = random(["Major Pentatonic", "Minor Pentatonic", "Major scale", "Dorian mode", "Mixolydian mode", "Aeolian mode", "Chromatic", "Harmonic Minor", "Whole Tone", "Octatonic"]);
-  scalesDropdown.selected(randomScale);
-  changeScale(); 
+    randomTempo = random(0.15, 0.4); // avoid slowest option - full range
+    durationSlider.value(randomTempo);
 
-  createRandomPoints(int(random(30)+10));  
-  initializePointsArray();
-  updateButtons();
-  updateBarColors();
-  
-  // individ. instruments
-  individualInstrumentArray = [];
-  for (let i = 0; i < 37; i++) {
-  individualInstrumentArray.push(randomInt(1, 3));
-}
-  loadAudioSet(individualInstrumentArray);    
+    // start with number of notes
+    numWheels = int(random(12)) + 3;
+
+    randomScale = random(["Major Pentatonic", "Minor Pentatonic", "Major scale", "Dorian mode", "Mixolydian mode", "Aeolian mode", "Chromatic", "Harmonic Minor", "Whole Tone", "Octatonic"]);
+    scalesDropdown.selected(randomScale);
+    changeScale(); 
+
+    createRandomPoints(int(random(30)+10));  
+    initializePointsArray();
+    updateButtons();
+    updateBarColors();
+
+    // individ. instruments
+    individualInstrumentArray = [];
+    for (let i = 0; i < 37; i++) {
+    individualInstrumentArray.push(randomInt(1, 3));
+  }
+    loadAudioSet(individualInstrumentArray);    
+  }
   
 }
 
