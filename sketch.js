@@ -96,6 +96,9 @@ BufferLoader.prototype.load = function() {
 function preload() {
   audioContext = new (window.AudioContext || window.webkitAudioContext)();
   loadAudioSet(individualInstrumentArray);
+  audioContext.suspend().then(() => {
+    console.log('AudioContext state in preload:', audioContext.state);
+  });  
 }
 
 function loadAudioSet(individualInstrumentArray) {
@@ -362,6 +365,12 @@ let octatonic = {
 let scaleMappings = majorPentatonic;
 
 function setup() {
+  // Suspend the AudioContext
+  audioContext.suspend().then(() => {
+    console.log('AudioContext suspended in setup:', audioContext.state);
+  }).catch((err) => {
+    console.error('Error suspending AudioContext:', err);
+  });  
   createCanvas(windowWidth, windowHeight);
   graphics = createGraphics(windowWidth, windowHeight);
   graphics.stroke(0, 50);
@@ -600,6 +609,17 @@ function drawMark(x, y, alpha) {
 }
 
 function touchStarted() {
+  if (audioContext.state !== 'running') {
+    userStartAudio().then(() => {
+      audioContext.resume().then(() => {
+        console.log('AudioContext resumed on mousePressed:', audioContext.state);
+      }).catch((err) => {
+        console.error('Error resuming AudioContext:', err);
+      });
+    }).catch((err) => {
+      console.error('Error starting user audio:', err);
+    });
+  }  
   if (touches.length > 0) {
     let touchX = touches[0].x;
     let touchY = touches[0].y;
@@ -894,7 +914,6 @@ function positionrandomButton() {
 
 function randomiseEverything() {
   if (!isPlaying) {
-    
 
     randomTempo = random(0.15, 0.4); // avoid slowest option - full range
     durationSlider.value(randomTempo);
