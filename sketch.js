@@ -921,7 +921,7 @@ function randomiseEverything() {
     // start with number of notes
     numWheels = int(random(12)) + 3;
 
-    randomScale = random(["Major Pentatonic", "Minor Pentatonic", "Major scale", "Dorian mode", "Mixolydian mode", "Aeolian mode", "Chromatic", "Harmonic Minor", "Whole Tone", "Octatonic"]);
+    randomScale = random(["Major Pentatonic", "Minor Pentatonic", "Major Pentatonic", "Minor Pentatonic", "Major scale", "Dorian mode", "Mixolydian mode", "Aeolian mode", "Chromatic", "Harmonic Minor", "Whole Tone", "Octatonic"]);
     scalesDropdown.selected(randomScale);
     changeScale(); 
 
